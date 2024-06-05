@@ -1,0 +1,126 @@
+<p-toolbar *ngIf="!userDialog" styleClass="bg-pink-400 shadow-2" [style]="{ 'border-radius': '3rem'}">
+    <ng-template pTemplate="start">
+        <div>
+            <h4> 欢迎来到中国销售</h4>
+            <h5>CHINESE OCTION</h5>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="center">
+        <div class="flex flex-wrap align-items-center gap-3">
+            <button (click)="goToHome()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle  hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-home text-2xl"></i></button>
+            <button (click)="goToBasket()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-shopping-cart text-2xl"></i></button>
+            <button (click)="goToGift()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-gift text-2xl"></i></button>
+            <button (click)="goToDonor()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-user text-2xl"></i></button>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="end">
+
+    </ng-template>
+
+</p-toolbar>
+
+<p-dialog (onHide)="goToBasket()"dir="ltr" [(visible)]="userDialog" styleClass="p-fluid" [style]="{width: '480px',height:'2000px'}"
+    header="Payment" [modal]="true">
+    <ng-template pTemplate="content" [formGroup]="frmUser">
+        <h4>Your total sum is: {{sum}}$</h4>
+        <div>
+            <h1>User Deatails</h1>
+        </div>
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+                <i class="pi pi-user"></i>
+            </span>
+            <input pInputText id="userName" formControlName="userName" placeholder="Username" />
+        </div>
+        <small class="p-error"
+            *ngIf="frmUser.controls['userName'].errors && frmUser.controls['userName'].errors['required']">userName is
+            required.</small>
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+                <i class="pi pi-phone"></i>
+            </span>
+            <input minlength="10" maxlength="10" id="phonNumber" pInputText formControlName="phone" pKeyFilter="int"
+                placeholder="PhonNumber" />
+        </div>
+        <small class="p-error"
+            *ngIf="frmUser.controls['phone'].errors && frmUser.controls['phone'].errors['required']">PhonNumber is
+            required.</small>
+        <small class="p-error" *ngIf="frmUser.controls['phone'].errors && frmUser.controls['phone'].errors['maxlength']">phone
+            must be 10 nums.</small>
+        <small class="p-error" *ngIf="frmUser.controls['phone'].errors && frmUser.controls['phone'].errors['minlength']">phone
+            must be 10 nums.</small>
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+                <i class="pi pi-home"></i>
+            </span>
+            <input formControlName="address" id="address" pInputText placeholder="Address" />
+        </div>
+
+        <br><br>
+        <div>
+            <h1>creditCard Deatails</h1>
+        </div>
+
+
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+                <i class="pi pi-credit-card"></i>
+            </span>
+            <input maxlength="16" formControlName="creditCard" id="cardNumber" pInputText placeholder="Card Number" />
+        </div>
+        <small class="p-error"
+            *ngIf="frmUser.controls['creditCard'].errors && frmUser.controls['creditCard'].errors['required']">CardNumber
+            is required.</small>
+        <small class="p-error"
+            *ngIf="frmUser.controls['creditCard'].errors && frmUser.controls['creditCard'].errors['maxlength']">CardNumber
+            nus be 16 characters.</small>
+        <small class="p-error"
+            *ngIf="frmUser.controls['creditCard'].errors && frmUser.controls['creditCard'].errors['minlength']">CardNumber
+            nus be 16 characters.</small>
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+                <i class="pi pi-calendar"></i>
+            </span>
+            <p-calendar formControlName="date" view="month" dateFormat="mm/yy" [readonlyInput]="true"></p-calendar>
+        </div>
+        <small class="p-error"
+            *ngIf="frmUser.controls['date'].errors && frmUser.controls['date'].errors['required']">Validity is
+            required.</small>
+
+
+        <div class="p-inputgroup">
+            <span class="p-inputgroup-addon">
+                <i class="pi pi-ellipsis-h"></i>
+            </span>
+            <input maxlength="3" formControlName="num" pInputText placeholder="cvc" pKeyFilter="int" />
+        </div>
+        <small class="p-error" *ngIf="frmUser.controls['num'].errors && frmUser.controls['num'].errors['required']">cvs
+            is required.</small>
+        <small class="p-error" *ngIf="frmUser.controls['num'].errors && frmUser.controls['num'].errors['maxlength']">cvs
+            must be 3 nums.</small>
+        <small class="p-error" *ngIf="frmUser.controls['num'].errors && frmUser.controls['num'].errors['minlength']">cvs
+            must be 3 nums.</small>
+
+    </ng-template>
+   
+    <i *ngIf="frmUser.invalid" class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+    <ng-template pTemplate="footer">
+        <p-button [disabled]="frmUser.invalid" severity="warning" label="Payment" [text]="true" [raised]="true"
+            icon="pi pi-check" (click)="pay()"></p-button>
+    </ng-template>
+</p-dialog>
+
+
+<div *ngIf="!userDialog">
+    <h1>תודה על תרומתך פרטים יישלחו לזוכים</h1>
+<h2>מספר הזמנה {{numUser}}</h2>
+</div>

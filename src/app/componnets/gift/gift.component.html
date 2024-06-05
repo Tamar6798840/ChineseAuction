@@ -1,0 +1,139 @@
+
+<p-toolbar styleClass="bg-pink-400 shadow-2" [style]="{ 'border-radius': '3rem'}">
+    <ng-template pTemplate="start">
+        <div><h4> 欢迎来到中国销售</h4>    
+        <h5>CHINESE OCTION</h5></div>
+    </ng-template>
+    <ng-template pTemplate="center">
+        <div class="flex flex-wrap align-items-center gap-3">
+            <button (click)="goToHome()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle  hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-home text-2xl"></i></button>
+            <button (click)="goToBasket()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-shopping-cart text-2xl"></i></button>
+            <button 
+                class="p-link inline-flex justify-content-center align-items-center text-green-200 h-3rem w-3rem border-circle  transition-all transition-duration-200"><i
+                    class="pi pi-gift text-2xl"></i></button>
+            <button (click)="goToDonor()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-user text-2xl"></i></button>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="end">
+
+    </ng-template>
+
+</p-toolbar>
+<br><p-button  class="button" label="Add" icon="pi pi-plus" iconPos="right" (click)="goToAdd()" ></p-button>
+<br><br><br><br>
+<div class="my-css" *ngIf="listGifts.length!=0 else div">
+    <p-table #dt [value]="listGifts" [rows]="10" 
+        [globalFilterFields]="['name','representative.name','status']" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                <marquee class="m-0">Manage Products</marquee>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                
+                <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="donor">donor <p-sortIcon field="donor"></p-sortIcon></th>
+                <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                <th pSortableColumn="picture">Picture <p-sortIcon field="picture"></p-sortIcon></th>
+                <th >delete </th>
+             
+                <th>edit</th>
+                <th>random</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-gift>
+            <tr>
+              
+              
+                <td>{{gift.id}}</td>
+                <td>{{gift.name}}</td>
+                <td>{{gift.donor.name}}</td>
+                <td>{{gift.price | currency:'USD'}}</td>
+                <td><p-image   src="../../../assets/public/{{gift.img}}.jpg"  alt="Image" width="200" [preview]="true"></p-image>  </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"
+                        (click)="delete(gift.id)"></button>
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                        (click)="goToedit(gift)"></button>
+                </td>
+                <td>
+                    <button  [disabled]="gift.IsRandom || gift.customers.length==0" pButton pRipple icon="pi pi-gift" class="p-button-rounded p-button-warning"
+                        (click)="random(gift)"></button>
+                </td>
+            </tr>
+            
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{listGifts ? listGifts.length : 0 }} gifts.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+
+<ng-template #div><h1>--No gifts--</h1></ng-template>
+<p-dialog  (onHide)="hideDialog()" [style]="{width: '500px',height:'800px'}"  [modal]="true"  styleClass="p-fluid"
+    [(visible)]="productDialog">
+ 
+    <ng-template pTemplate="content" [formGroup]="frmGift">
+      
+        <div class="p-field">
+            <label for="Name">Name</label>
+            <textarea id="Name"  class="form-control" formControlName="name"  [ngClass]="{'has-error':!frmGift.controls['name'].valid && frmGift.controls['name'].touched}" pInputTextarea required rows="3" cols="20"  ></textarea>
+        </div>
+        <div class="p-field">
+            <label for="Name">Picture</label>
+            <textarea id="Name"  class="form-control" formControlName="img"  [ngClass]="{'has-error':!frmGift.controls['img'].valid && frmGift.controls['img'].touched}" pInputTextarea required rows="3" cols="20"  ></textarea>
+        </div>
+  
+        <div class="p-field">
+            <label for="listDonors">donors</label>
+            <p-dropdown class="form-control" formControlName="donor" optionLabel="name" inputId="listDonors" [options]="listDonors" placeholder="בחר תורם"  >
+             
+                <ng-template let-option pTemplate="item"> 
+                
+                    <span [class]="'product-badge status-' + option.name">{{option.name}}</span>
+                </ng-template>
+            </p-dropdown>
+        </div>
+        
+    
+    <div class="p-field p-col">
+        <label for="price">Price</label>
+        <p-inputNumber id="price" class="form-control" formControlName="price"  [ngClass]="{'has-error':!frmGift.controls['price'].valid && frmGift.controls['price'].touched}" placeholder="10" mode="currency" currency="USD"
+            locale="en-US"></p-inputNumber>
+    </div>
+    
+</ng-template>
+   
+
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save"  icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+    </ng-template>
+
+</p-dialog> 
+<p-dialog  [style]="{width: '500px',height:'800px'}" header="the winner is:" [modal]="true" styleClass="p-fluid"
+    [(visible)]="winnerDialog">
+    <div *ngIf="winner!=null"> 
+    <h1>{{winner.userName}}</h1>
+    <h2>{{winner.address}}</h2>
+    <h3>{{winner.phone}}</h3>
+    </div>
+
+</p-dialog> 
+

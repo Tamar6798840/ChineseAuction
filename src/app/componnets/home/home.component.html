@@ -1,0 +1,40 @@
+<p-toolbar styleClass="bg-pink-400 shadow-2" [style]="{ 'border-radius': '3rem'}">
+    <ng-template pTemplate="start">
+        <div><h4> 欢迎来到中国销售</h4>    
+            <h5>CHINESE OCTION</h5></div>
+      
+    </ng-template>
+    <ng-template pTemplate="center">
+        <div class="flex flex-wrap align-items-center gap-3">
+            <button
+                class="p-link inline-flex justify-content-center align-items-center text-green-200 h-3rem w-3rem border-circle  transition-all transition-duration-200"><i
+                    class="pi pi-home text-2xl"></i></button>
+            <button (click)="goToBasket()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-shopping-cart text-2xl"></i></button>
+            <button (click)="goToGift()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-gift text-2xl"></i></button>
+            <button (click)="goToDonor()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-user text-2xl"></i></button>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="end">
+
+    </ng-template>
+
+</p-toolbar>
+
+<body>
+    <div class="flex flex-column align-items-center gap-2">
+        <span class="text-xl font-medium">כאן תגשים את חלומותיך</span>
+        <h1>זכות שהיא שווה</h1>
+        <span class="slidedown-icon h-2rem w-2rem bg-green-200 border-circle inline-flex align-items-center justify-content-center">
+            <i class="pi pi-gift"></i>
+        </span>
+        <br>
+    </div>
+   
+    

@@ -1,0 +1,109 @@
+<p-toolbar styleClass="bg-pink-400 shadow-2" [style]="{ 'border-radius': '3rem'}">
+    <ng-template pTemplate="start">
+        <div><h4> 欢迎来到中国销售</h4>    
+            <h5>CHINESE OCTION</h5></div>
+    </ng-template>
+    <ng-template pTemplate="center">
+        <div class="flex flex-wrap align-items-center gap-3">
+            <button (click)="goToHome()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle  hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-home text-2xl"></i></button>
+            <button (click)="goToBasket()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-shopping-cart text-2xl"></i></button>
+            <button (click)="goToGift()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle  transition-all transition-duration-200"><i
+                    class="pi pi-gift text-2xl"></i></button>
+            <button
+                class="p-link inline-flex justify-content-center align-items-center text-green-200 h-3rem w-3rem border-circle  transition-all transition-duration-200"><i
+                    class="pi pi-user text-2xl"></i></button>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="end">
+
+    </ng-template>
+
+</p-toolbar>
+<br><p-button class="button" label="Add" icon="pi pi-plus" iconPos="right" (click)="goToAdd()"></p-button>
+<br><br><br><br>
+<div *ngIf="listDonors.length!=0;else div1" class="my-css">
+    <p-table #dt [value]="listDonors" [rows]="10" 
+        [globalFilterFields]="['name','representative.name','status']" [rowHover]="true" dataKey="id"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [showCurrentPageReport]="true">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+                <th pSortableColumn="address">address <p-sortIcon field="address"></p-sortIcon></th>
+                <th>Delete</th>
+                <th>edit</th>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-donor>
+            <tr>
+                <td>{{donor.id}}</td>
+                <td>{{donor.name}}</td>
+                <td>{{donor.address}}</td>
+                <td>
+                    <div class="card flex justify-content-center">
+                        <p-toast></p-toast>
+                        <p-confirmDialog #cd>
+                            <ng-template pTemplate="headless" let-message>
+                                <div class="flex flex-column align-items-center p-5 surface-overlay border-round">
+                                    <div
+                                        class="border-circle bg-primary inline-flex justify-content-center align-items-center h-6rem w-6rem -mt-8">
+                                        <i class="pi pi-question text-5xl"></i>
+                                    </div>
+                                    <span class="font-bold text-2xl block mb-2 mt-4">{{ message.header }}</span>
+                                    <p class="mb-0">{{ message.message }}</p>
+                                    <div class="flex align-items-center gap-2 mt-4">
+                                        <button pButton label="Save" (click)="cd.accept()" class="w-8rem"></button>
+                                        <button pButton label="Cancel" (click)="cd.reject()"
+                                            class="p-button-outlined w-8rem " class="cancel"></button>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </p-confirmDialog>
+                        <button pButton pRipple (click)="confirm(donor.id)" icon="pi pi-trash" class="p-button-rounded p-button-warning"></button>
+                    </div>
+                </td>
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-warning"
+                        (click)="goToedit(donor)"></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                In total there are {{listDonors ? listDonors.length : 0 }} donors.
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+<!-- <div else>
+    <p>hcfuohfv</p>
+</div> -->
+
+<ng-template #div1>
+    <h1>--No donors--</h1>
+</ng-template>
+<p-dialog (onHide)="hideDialog()" *ngIf="gotoAddEdit" [style]="{width: '450px'}" header="edit" [modal]="true" styleClass="p-fluid"
+    [(visible)]="donorDialog">
+    <ng-template pTemplate="content">
+
+        <div class="p-field">
+            <label for="Name">Name</label>
+            <textarea id="Name" pInputTextarea [(ngModel)]="donor.name" required rows="3" cols="20"></textarea>
+        </div>
+        <div class="p-field">
+            <label for="Name">Address</label>
+            <textarea id="address" pInputTextarea [(ngModel)]="donor.address" required rows="3" cols="20"></textarea>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="saveDonor()"></button>
+    </ng-template>
+</p-dialog>

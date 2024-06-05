@@ -1,0 +1,53 @@
+<p-toolbar styleClass="bg-pink-400 shadow-2" [style]="{ 'border-radius': '3rem'}">
+    <ng-template pTemplate="start">
+        <div>
+            <h4>欢 迎 来 到 中 国 销 售</h4>
+            <h5>CHINESE OCTION</h5>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="center">
+        <div class="flex flex-wrap align-items-center gap-3">
+            <button (click)="goToHome()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle  hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-home text-2xl"></i></button>
+            <button
+                class="p-link inline-flex justify-content-center align-items-center text-green-200 h-3rem w-3rem border-circle hover:bg-white-alpha-10 transition-all transition-duration-200"><i
+                    class="pi pi-shopping-cart text-2xl"></i></button>
+            <button (click)="goToGift()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle  transition-all transition-duration-200"><i
+                    class="pi pi-gift text-2xl"></i></button>
+            <button (click)="goToDonor()"
+                class="p-link inline-flex justify-content-center align-items-center text-black h-3rem w-3rem border-circle  transition-all transition-duration-200"><i
+                    class="pi pi-user text-2xl"></i></button>
+        </div>
+
+    </ng-template>
+    <ng-template pTemplate="end">
+
+    </ng-template>
+
+</p-toolbar>
+
+<br>
+<button [disabled]="basket.length==0" pButton pRipple class="p-button-rounded p-button-warning" (click)="goToPay()">pay</button>
+
+<marquee class="m-0">Manage your basket-כדי להגדיל את סיכויי הזכיה לא ניתן לקנות יותר מכרטיס בודד לכל מתנה</marquee>
+
+<div *ngIf="listGifts.length!=0 || basket.length!=0; else noGift">
+    <p-pickList [source]="listGifts" [target]="basket" sourceHeader="All gifts"
+        targetHeader=" Your basket cost::{{sum}} $" [dragdrop]="true" [responsive]="true"
+        [sourceStyle]="{ height: '30rem' }" [targetStyle]="{ height: '30rem' }" breakpoint="1400px">
+        <ng-template let-product pTemplate="listGifts">
+            <div class="flex flex-wrap p-2 align-items-center gap-3">
+                <p-image src="../../../assets/public/{{product.img}}.jpg" alt="Image" width="100"
+                    [preview]="true"></p-image>
+                <div class="flex-1 flex flex-column gap-2">
+                    <span class="font-bold">{{product.name}}</span>
+                </div>
+                <span class="font-bold text-900">{{'$' + product.price}}</span>
+
+            </div>
+        </ng-template>
+    </p-pickList>
+</div>
+<ng-template #noGift><h1 >no gift available</h1></ng-template>
